@@ -1,0 +1,57 @@
+version: "3.8"
+
+services:
+  nginx:
+    container_name: nginx
+    build: requirements/nginx
+    networks:
+      - inception
+    ports:
+      - "443:443"
+    volumes:
+      - wordpress_volume:/var/www/html
+    depends_on:
+      - wordpress
+  wordpress:
+    container_name: wordpress
+    build: requirements/wordpress
+    networks:
+      - inception
+    ports:
+      - "9000:9000"
+    volumes:
+      - wordpress_volume:/var/www/html
+    env_file:
+      - .env
+    depends_on:
+      - mariadb
+  mariadb:
+    container_name: mariadb
+    build: requirements/mariadb
+    networks:
+      - inception
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_volume:/var/lib/mysql
+    env_file:
+      - .env
+    restart: always
+
+volumes:
+  wordpress_volume:
+    driver: local
+    driver_opts:
+      type: none
+      device: wordpress_volume
+      path: /home/spoliart/data/wordpress
+  db_volume:
+    driver: local
+    driver_opts:
+      type: none
+      device: db_volume
+      path: /home/spoliart/data/db
+
+networks:
+  inception:
+    driver: bridge
