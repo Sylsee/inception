@@ -1,9 +1,0 @@
-NGINX:
-Generate nginx Dockerfile and nginx.conf file.
-The Dockerfile must use debian:buster and use openssl to generate two files: cert.pem and key.pem.
-The nginx.conf file must use the port 443 only, using the TLSv1.2 or TLSv1.3 protocol and the key created by openssl.
-
-WORDPRESS:
-Generate a Dockerfile for wordpress and php-fpm and a shell script to install and configure wordpress.
-The Dockerfile must use debian:buster and use the shell script to install and configure wordpress.
-This container will run without nginx, an other container run nginx.

@@ -1,5 +1,12 @@
 DOCKER=/snap/bin/docker
-DOCKER-COMPOSE=$(DOCKER) compose -f srcs/docker-compose.yml
+DOCKER-COMPOSE=${DOCKER} compose -f srcs/docker-compose.yml
+
+rdebug: fclean
+	sudo rm -rf /home/${USER}/data/wordpress/* /home/${USER}/data/db/*
+	docker-compose -f srcs/docker-compose.yml up --build
+
+debug:
+	docker-compose -f srcs/docker-compose.yml up --build
 
 all: up
 
@@ -11,6 +18,9 @@ down:
 
 clean: down
 	${DOCKER} system prune -a -f
+
+fclean: clean
+	${DOCKER} volume rm -f $$(docker volume ls -q)
 
 re: down up
 
