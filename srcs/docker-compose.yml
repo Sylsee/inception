@@ -16,28 +16,42 @@ services:
 
   wordpress:
     container_name: wordpress
-    build: requirements/wordpress
-    networks:
-      - inception
-    volumes:
-      - wordpress-volume:/var/www/html/
+    build:
+      context: requirements/wordpress
+      args:
+        - DB_NAME=$DB_NAME
+        - DB_USER=$DB_USER
+        - DB_PASSWORD=$DB_PASSWORD
+        - DB_HOST=$DB_HOST
     env_file:
       - .env
+    networks:
+      - inception
+    ports:
+      - "9000:9000"
+    volumes:
+      - wordpress-volume:/var/www/html/
     depends_on:
       - mariadb
     restart: always
 
   mariadb:
     container_name: mariadb
-    build: requirements/mariadb
+    build:
+      context: requirements/mariadb
+      args:
+        - DB_NAME=$DB_NAME
+        - DB_USER=$DB_USER
+        - DB_PASSWORD=$DB_PASSWORD
+        - DB_ROOT=$DB_ROOT
+    env_file:
+      - .env
     networks:
       - inception
     ports:
       - "3306:3306"
     volumes:
       - db-volume:/var/lib/mysql
-    env_file:
-      - .env
     restart: always
 
 volumes:

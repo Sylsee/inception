@@ -1,10 +1,10 @@
 FROM debian:buster
 
-# Create environment variables
-ENV DB_NAME $DB_NAME
-ENV DB_USER $DB_USER
-ENV DB_PASSWORD $DB_PASSWORD
-ENV DB_HOST $DB_HOST
+# Create arguments for WordPress configuration
+ARG DB_NAME
+ARG DB_USER
+ARG DB_PASSWORD
+ARG DB_HOST
 
 ARG PHP_VERSION=7.3
 
