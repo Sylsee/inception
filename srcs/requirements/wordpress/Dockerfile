@@ -1,12 +1,11 @@
 FROM debian:buster
 
-# Create arguments for WordPress configuration
-ARG DB_NAME
-ARG DB_USER
-ARG DB_PASSWORD
-ARG DB_HOST
-
-ARG PHP_VERSION=7.3
+# Create ARG variables for WordPress configuration
+ARG DB_NAME \
+    DB_USER \
+    DB_PASSWORD \
+    DB_HOST \
+    PHP_VERSION=7.3
 
 # Install dependencies
 RUN apt-get update && apt-get install -y \
@@ -32,11 +31,10 @@ RUN apt-get update && apt-get install -y \
 
 # Create a shell script to install and configure WordPress
 COPY scripts/entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
+RUN chmod +x /entrypoint.sh \
+    # Install wordpress and configure it
+    && /entrypoint.sh
 
 EXPOSE 9000
-
-# Run the shell script when the container starts
-ENTRYPOINT ["/entrypoint.sh"]
 
 CMD ["/usr/sbin/php-fpm7.3", "-F"]

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ ! -d "/var/lib/mysql/mysql" ]; then
-	mysql_install_db
+	mysql_install_db --user=mysql
 fi
 
 # Start the mysql service
@@ -9,8 +9,6 @@ fi
 
 if [ -d "/var/lib/mysql/${DB_NAME}" ]; then
 	echo "Database already exists"
-	echo ${DB_NAME}
-	sleep 5
 else
 
 	# Create directory for sock-file
@@ -21,7 +19,8 @@ else
 	# Secure mysql installation
 	cat > mysql_secure_installation.sql << EOF
 # Make sure that NOBODY can access the server without a password
-UPDATE mysql.user SET Password=PASSWORD('$DB_ROOT') WHERE User='root';
+# UPDATE mysql.user SET Password=PASSWORD('$DB_ROOT') WHERE User='root';
+ALTER USER 'root'@'localhost' IDENTIFIED BY '$DB_ROOT';
 # Kill the anonymous users
 DELETE FROM mysql.user WHERE User='';
 # Kill off the test database
@@ -43,7 +42,7 @@ GRANT ALL PRIVILEGES ON $DB_NAME.* TO '$DB_USER'@'%' IDENTIFIED BY '$DB_PASSWORD
 # Make our changes take effect
 FLUSH PRIVILEGES;
 EOF
-	mysql -sfu root < create_db.sql
+	mysql -sfu root -p$DB_ROOT < create_db.sql
 
 	# Clean up
 	rm -f create_db.sql mysql_secure_installation.sql

@@ -1,7 +1,8 @@
-version: '3'
+version: '3.7'
 
 services:
   nginx:
+    init: true
     container_name: nginx
     build: requirements/nginx
     networks:
@@ -15,6 +16,7 @@ services:
     restart: always
 
   wordpress:
+    init: true
     container_name: wordpress
     build:
       context: requirements/wordpress
@@ -23,8 +25,6 @@ services:
         - DB_USER=$DB_USER
         - DB_PASSWORD=$DB_PASSWORD
         - DB_HOST=$DB_HOST
-    env_file:
-      - .env
     networks:
       - inception
     ports:
@@ -36,6 +36,7 @@ services:
     restart: always
 
   mariadb:
+    init: true
     container_name: mariadb
     build:
       context: requirements/mariadb
@@ -44,8 +45,6 @@ services:
         - DB_USER=$DB_USER
         - DB_PASSWORD=$DB_PASSWORD
         - DB_ROOT=$DB_ROOT
-    env_file:
-      - .env
     networks:
       - inception
     ports:
