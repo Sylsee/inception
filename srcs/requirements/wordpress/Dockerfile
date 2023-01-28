@@ -29,10 +29,9 @@ RUN apt-get update && apt-get install -y \
     php${PHP_VERSION}-bcmath \
     && rm -rf /var/lib/apt/lists/*
 
-# Create a shell script to install and configure WordPress
+# Run shell script to install and configure WordPress
 COPY scripts/entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh \
-    # Install wordpress and configure it
     && /entrypoint.sh
 
 EXPOSE 9000
