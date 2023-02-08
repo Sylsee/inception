@@ -14,7 +14,6 @@ RUN apt-get update && apt-get install -y \
     curl \
     mariadb-client \
     unzip \
-    nginx \
     php${PHP_VERSION}-fpm \
     php${PHP_VERSION}-cli \
     php${PHP_VERSION}-cgi \
