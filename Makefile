@@ -1,4 +1,4 @@
-DOCKER=/snap/bin/docker
+DOCKER=docker
 DOCKER-COMPOSE=${DOCKER} compose -f srcs/docker-compose.yml
 
 all: up
